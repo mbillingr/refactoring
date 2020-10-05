@@ -3,6 +3,7 @@ def statement(invoice, plays):
         result = dict(**a_performance)
         result['play'] = play_for(result)
         result['amount'] = amount_for(result)
+        result['volume_credits'] = volume_credits_for(result)
         return result
 
     def play_for(a_performance):
@@ -23,6 +24,13 @@ def statement(invoice, plays):
             raise ValueError(f"unknown type: {a_performance['play']['type']}")
         return result
 
+    def volume_credits_for(a_performance):
+        result = 0
+        result += max(a_performance['audience'] - 30, 0)
+        if "comedy" == a_performance['play']['type']:
+            result += a_performance['audience'] // 5
+        return result
+
     statement_data = {}
     statement_data['customer'] = invoice['customer']
     statement_data['performances'] = list(map(enrich_performance,
@@ -32,20 +40,13 @@ def statement(invoice, plays):
 
 def render_plain_text(data, plays):
 
-    def volume_credits_for(a_performance):
-        result = 0
-        result += max(a_performance['audience'] - 30, 0)
-        if "comedy" == a_performance['play']['type']:
-            result += a_performance['audience'] // 5
-        return result
-
     def usd(cents):
         return "${:,.2f}".format(cents / 100)
 
     def total_volume_credits():
         result = 0
         for perf in data['performances']:
-            result += volume_credits_for(perf)
+            result += perf['volume_credits']
         return result
 
     def total_amount():
