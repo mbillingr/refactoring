@@ -24,10 +24,12 @@ def statement(invoice, plays):
             result += a_performance['audience'] // 5
         return result
 
+    def format(a_number):
+        return "${:,.2f}".format(a_number)
+
     total_amount = 0
     volume_credits = 0
     result = f"Statement for {invoice['customer']}\n"
-    format = "${:,.2f}".format
 
     for perf in invoice['performances']:
         volume_credits += volume_credits_for(perf)
