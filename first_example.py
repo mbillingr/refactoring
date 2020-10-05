@@ -34,6 +34,7 @@ def statement(invoice, plays):
     for perf in invoice['performances']:
         volume_credits += volume_credits_for(perf)
 
+    for perf in invoice['performances']:
         # print line for this order
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
         total_amount += amount_for(perf)
