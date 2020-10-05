@@ -24,8 +24,8 @@ def statement(invoice, plays):
             result += a_performance['audience'] // 5
         return result
 
-    def format(a_number):
-        return "${:,.2f}".format(a_number)
+    def usd(cents):
+        return "${:,.2f}".format(cents / 100)
 
     total_amount = 0
     volume_credits = 0
@@ -35,9 +35,9 @@ def statement(invoice, plays):
         volume_credits += volume_credits_for(perf)
 
         # print line for this order
-        result += f"  {play_for(perf)['name']}: {format(amount_for(perf) / 100)} ({perf['audience']} seats)\n"
+        result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
         total_amount += amount_for(perf)
 
-    result += f"Amount owed is {format(total_amount / 100)}\n"
+    result += f"Amount owed is {usd(total_amount)}\n"
     result += f"You earned {volume_credits} credits\n"
     return result
