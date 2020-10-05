@@ -33,14 +33,18 @@ def statement(invoice, plays):
             volume_credits += volume_credits_for(perf)
         return volume_credits
 
+    def apple_saouce():
+        total_amount = 0
+        for perf in invoice['performances']:
+            total_amount += amount_for(perf)
+        return total_amount
+
     result = f"Statement for {invoice['customer']}\n"
 
     for perf in invoice['performances']:
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
 
-    total_amount = 0
-    for perf in invoice['performances']:
-        total_amount += amount_for(perf)
+    total_amount = apple_saouce()
 
     result += f"Amount owed is {usd(total_amount)}\n"
     result += f"You earned {total_volume_credits()} credits\n"
