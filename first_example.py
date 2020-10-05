@@ -49,11 +49,10 @@ def statement(invoice, plays):
                                               invoice['performances']))
     statement_data['total_amount'] = total_amount(statement_data)
     statement_data['total_volume_credits'] = total_volume_credits(statement_data)
-    return render_plain_text(statement_data, plays)
+    return render_plain_text(statement_data)
 
 
-def render_plain_text(data, plays):
-
+def render_plain_text(data):
     def usd(cents):
         return "${:,.2f}".format(cents / 100)
 
