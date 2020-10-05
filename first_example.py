@@ -1,10 +1,11 @@
 def statement(invoice, plays):
     statement_data = {}
     statement_data['customer'] = invoice['customer']
-    return render_plain_text(statement_data, invoice, plays)
+    statement_data['performances'] = invoice['performances']
+    return render_plain_text(statement_data, plays)
 
 
-def render_plain_text(data, invoice, plays):
+def render_plain_text(data, plays):
     def play_for(a_performance):
         return plays[a_performance['playID']]
 
@@ -35,19 +36,19 @@ def render_plain_text(data, invoice, plays):
 
     def total_volume_credits():
         result = 0
-        for perf in invoice['performances']:
+        for perf in data['performances']:
             result += volume_credits_for(perf)
         return result
 
     def total_amount():
         result = 0
-        for perf in invoice['performances']:
+        for perf in data['performances']:
             result += amount_for(perf)
         return result
 
     result = f"Statement for {data['customer']}\n"
 
-    for perf in invoice['performances']:
+    for perf in data['performances']:
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
 
     result += f"Amount owed is {usd(total_amount())}\n"
