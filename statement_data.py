@@ -31,7 +31,12 @@ def create_statement_data(invoice, plays):
 
 
 def create_performance_calculator(a_performance, a_play):
-    return PerformanceCalculator(a_performance, a_play)
+    if a_play['type'] == 'tragedy':
+        return TragedyCalculator(a_performance, a_play)
+    elif a_play['type'] == 'comedy':
+        return ComedyCalculator(a_performance, a_play)
+    else:
+        raise ValueError(f"unknown type: {a_play['type']}")
 
 
 class PerformanceCalculator:
@@ -61,3 +66,11 @@ class PerformanceCalculator:
         if "comedy" == self.play['type']:
             result += self.performance['audience'] // 5
         return result
+
+
+class TragedyCalculator(PerformanceCalculator):
+    pass
+
+
+class ComedyCalculator(PerformanceCalculator):
+    pass
