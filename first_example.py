@@ -1,8 +1,9 @@
 def statement(invoice, plays):
-    return render_plain_text(invoice, plays)
+    statement_data = {}
+    return render_plain_text(statement_data, invoice, plays)
 
 
-def render_plain_text(invoice, plays):
+def render_plain_text(data, invoice, plays):
     def play_for(a_performance):
         return plays[a_performance['playID']]
 
