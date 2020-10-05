@@ -4,17 +4,17 @@ def statement(invoice, plays):
 
     def amount_for(a_performance, play):
         result = 0
-        if play['type'] == "tragedy":
+        if play_for(a_performance)['type'] == "tragedy":
             result = 40000
             if a_performance['audience'] > 30:
                 result += 1000 * (a_performance['audience'] - 30)
-        elif play['type'] == "comedy":
+        elif play_for(a_performance)['type'] == "comedy":
             result = 30000
             if a_performance['audience'] > 20:
                 result += 10000 + 500 * (a_performance['audience'] - 20)
             result += 300 * a_performance['audience']
         else:
-            raise ValueError(f"unknown type: {play['type']}")
+            raise ValueError(f"unknown type: {play_for(a_performance)['type']}")
         return result
 
     total_amount = 0
@@ -38,5 +38,3 @@ def statement(invoice, plays):
     result += f"Amount owed is {format(total_amount / 100)}\n"
     result += f"You earned {volume_credits} credits\n"
     return result
-
-
