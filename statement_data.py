@@ -1,5 +1,12 @@
+class PerformanceCalculator:
+    def __init__(self, a_performance):
+        self.performance = a_performance
+
+
 def create_statement_data(invoice, plays):
     def enrich_performance(a_performance):
+        calculator = PerformanceCalculator(a_performance)
+
         result = dict(**a_performance)
         result['play'] = play_for(result)
         result['amount'] = amount_for(result)
