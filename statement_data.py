@@ -1,7 +1,3 @@
-def statement(invoice, plays):
-    return render_plain_text(create_statement_data(invoice, plays))
-
-
 def create_statement_data(invoice, plays):
     def enrich_performance(a_performance):
         result = dict(**a_performance)
@@ -43,24 +39,10 @@ def create_statement_data(invoice, plays):
         return sum(map(lambda perf: perf['amount'],
                        data['performances']))
 
-    statement_data = {}
-    statement_data['customer'] = invoice['customer']
-    statement_data['performances'] = list(map(enrich_performance,
+    result = {}
+    result['customer'] = invoice['customer']
+    result['performances'] = list(map(enrich_performance,
                                               invoice['performances']))
-    statement_data['total_amount'] = total_amount(statement_data)
-    statement_data['total_volume_credits'] = total_volume_credits(statement_data)
-    return statement_data
-
-
-def render_plain_text(data):
-    def usd(cents):
-        return "${:,.2f}".format(cents / 100)
-
-    result = f"Statement for {data['customer']}\n"
-
-    for perf in data['performances']:
-        result += f"  {perf['play']['name']}: {usd(perf['amount'])} ({perf['audience']} seats)\n"
-
-    result += f"Amount owed is {usd(data['total_amount'])}\n"
-    result += f"You earned {data['total_volume_credits']} credits\n"
+    result['total_amount'] = total_amount(result)
+    result['total_volume_credits'] = total_volume_credits(result)
     return result

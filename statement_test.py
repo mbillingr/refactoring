@@ -1,4 +1,4 @@
-from first_example import statement
+from statement import statement
 
 PLAYS = {'hamlet': {'name': 'Hamlet', 'type': 'tragedy'},
          'as-like': {'name': 'As You Like It', 'type': 'comedy'},
