@@ -2,19 +2,12 @@ def statement(invoice, plays):
     def enrich_performance(a_performance):
         result = dict(**a_performance)
         result['play'] = play_for(result)
+        result['amount'] = amount_for(result)
         return result
 
     def play_for(a_performance):
         return plays[a_performance['playID']]
 
-    statement_data = {}
-    statement_data['customer'] = invoice['customer']
-    statement_data['performances'] = list(map(enrich_performance,
-                                              invoice['performances']))
-    return render_plain_text(statement_data, plays)
-
-
-def render_plain_text(data, plays):
     def amount_for(a_performance):
         result = 0
         if a_performance['play']['type'] == "tragedy":
@@ -29,6 +22,15 @@ def render_plain_text(data, plays):
         else:
             raise ValueError(f"unknown type: {a_performance['play']['type']}")
         return result
+
+    statement_data = {}
+    statement_data['customer'] = invoice['customer']
+    statement_data['performances'] = list(map(enrich_performance,
+                                              invoice['performances']))
+    return render_plain_text(statement_data, plays)
+
+
+def render_plain_text(data, plays):
 
     def volume_credits_for(a_performance):
         result = 0
@@ -49,13 +51,13 @@ def render_plain_text(data, plays):
     def total_amount():
         result = 0
         for perf in data['performances']:
-            result += amount_for(perf)
+            result += perf['amount']
         return result
 
     result = f"Statement for {data['customer']}\n"
 
     for perf in data['performances']:
-        result += f"  {perf['play']['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
+        result += f"  {perf['play']['name']}: {usd(perf['amount'])} ({perf['audience']} seats)\n"
 
     result += f"Amount owed is {usd(total_amount())}\n"
     result += f"You earned {total_volume_credits()} credits\n"
