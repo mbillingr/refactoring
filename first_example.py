@@ -1,5 +1,6 @@
 def statement(invoice, plays):
     statement_data = {}
+    statement_data['customer'] = invoice['customer']
     return render_plain_text(statement_data, invoice, plays)
 
 
@@ -44,7 +45,7 @@ def render_plain_text(data, invoice, plays):
             result += amount_for(perf)
         return result
 
-    result = f"Statement for {invoice['customer']}\n"
+    result = f"Statement for {data['customer']}\n"
 
     for perf in invoice['performances']:
         result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
