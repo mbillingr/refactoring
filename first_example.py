@@ -32,16 +32,12 @@ def statement(invoice, plays):
         return result
 
     def total_volume_credits(data):
-        result = 0
-        for perf in data['performances']:
-            result += perf['volume_credits']
-        return result
+        return sum(map(lambda perf: perf['volume_credits'],
+                       data['performances']))
 
     def total_amount(data):
-        result = 0
-        for perf in data['performances']:
-            result += perf['amount']
-        return result
+        return sum(map(lambda perf: perf['amount'],
+                       data['performances']))
 
     statement_data = {}
     statement_data['customer'] = invoice['customer']
