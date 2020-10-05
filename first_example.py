@@ -18,11 +18,11 @@ def statement(invoice, plays):
         return result
 
     def volume_credits_for(a_performance):
-        volume_credits = 0
-        volume_credits += max(a_performance['audience'] - 30, 0)
+        result = 0
+        result += max(a_performance['audience'] - 30, 0)
         if "comedy" == play_for(a_performance)['type']:
-            volume_credits += a_performance['audience'] // 5
-        return volume_credits
+            result += a_performance['audience'] // 5
+        return result
 
     total_amount = 0
     volume_credits = 0
