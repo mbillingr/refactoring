@@ -14,19 +14,7 @@ def create_statement_data(invoice, plays):
         return plays[a_performance['playID']]
 
     def amount_for(a_performance):
-        result = 0
-        if a_performance['play']['type'] == "tragedy":
-            result = 40000
-            if a_performance['audience'] > 30:
-                result += 1000 * (a_performance['audience'] - 30)
-        elif a_performance['play']['type'] == "comedy":
-            result = 30000
-            if a_performance['audience'] > 20:
-                result += 10000 + 500 * (a_performance['audience'] - 20)
-            result += 300 * a_performance['audience']
-        else:
-            raise ValueError(f"unknown type: {a_performance['play']['type']}")
-        return result
+        return PerformanceCalculator(a_performance, play_for(a_performance)).amount
 
     def volume_credits_for(a_performance):
         result = 0
@@ -56,3 +44,18 @@ class PerformanceCalculator:
     def __init__(self, a_performance, a_play):
         self.performance = a_performance
         self.play = a_play
+
+    @property
+    def amount(self):
+        if self.play['type'] == "tragedy":
+            result = 40000
+            if self.performance['audience'] > 30:
+                result += 1000 * (self.performance['audience'] - 30)
+        elif self.play['type'] == "comedy":
+            result = 30000
+            if self.performance['audience'] > 20:
+                result += 10000 + 500 * (self.performance['audience'] - 20)
+            result += 300 * self.performance['audience']
+        else:
+            raise ValueError(f"unknown type: {self.performance['play']['type']}")
+        return result
