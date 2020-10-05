@@ -46,13 +46,7 @@ class PerformanceCalculator:
 
     @property
     def amount(self):
-        if self.play['type'] == "tragedy":
-            raise RuntimeError('Polymorphism failed')
-        elif self.play['type'] == "comedy":
-            raise RuntimeError('Polymorphism failed')
-        else:
-            raise ValueError(f"unknown type: {self.performance['play']['type']}")
-        return result
+        raise NotImplementedError('subclass responsibility')
 
     @property
     def volume_credits(self):
