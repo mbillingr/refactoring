@@ -15,27 +15,25 @@ def statement(invoice, plays):
 
 
 def render_plain_text(data, plays):
-    def play_for(a_performance):
-        return plays[a_performance['playID']]
     def amount_for(a_performance):
         result = 0
-        if play_for(a_performance)['type'] == "tragedy":
+        if a_performance['play']['type'] == "tragedy":
             result = 40000
             if a_performance['audience'] > 30:
                 result += 1000 * (a_performance['audience'] - 30)
-        elif play_for(a_performance)['type'] == "comedy":
+        elif a_performance['play']['type'] == "comedy":
             result = 30000
             if a_performance['audience'] > 20:
                 result += 10000 + 500 * (a_performance['audience'] - 20)
             result += 300 * a_performance['audience']
         else:
-            raise ValueError(f"unknown type: {play_for(a_performance)['type']}")
+            raise ValueError(f"unknown type: {a_performance['play']['type']}")
         return result
 
     def volume_credits_for(a_performance):
         result = 0
         result += max(a_performance['audience'] - 30, 0)
-        if "comedy" == play_for(a_performance)['type']:
+        if "comedy" == a_performance['play']['type']:
             result += a_performance['audience'] // 5
         return result
 
@@ -57,7 +55,7 @@ def render_plain_text(data, plays):
     result = f"Statement for {data['customer']}\n"
 
     for perf in data['performances']:
-        result += f"  {play_for(perf)['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
+        result += f"  {perf['play']['name']}: {usd(amount_for(perf))} ({perf['audience']} seats)\n"
 
     result += f"Amount owed is {usd(total_amount())}\n"
     result += f"You earned {total_volume_credits()} credits\n"
