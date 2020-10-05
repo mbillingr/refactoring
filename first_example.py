@@ -1,4 +1,8 @@
 def statement(invoice, plays):
+    return render_plain_text(create_statement_data(invoice, plays))
+
+
+def create_statement_data(invoice, plays):
     def enrich_performance(a_performance):
         result = dict(**a_performance)
         result['play'] = play_for(result)
@@ -45,7 +49,7 @@ def statement(invoice, plays):
                                               invoice['performances']))
     statement_data['total_amount'] = total_amount(statement_data)
     statement_data['total_volume_credits'] = total_volume_credits(statement_data)
-    return render_plain_text(statement_data)
+    return statement_data
 
 
 def render_plain_text(data):
