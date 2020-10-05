@@ -49,10 +49,7 @@ class PerformanceCalculator:
         if self.play['type'] == "tragedy":
             raise RuntimeError('Polymorphism failed')
         elif self.play['type'] == "comedy":
-            result = 30000
-            if self.performance['audience'] > 20:
-                result += 10000 + 500 * (self.performance['audience'] - 20)
-            result += 300 * self.performance['audience']
+            raise RuntimeError('Polymorphism failed')
         else:
             raise ValueError(f"unknown type: {self.performance['play']['type']}")
         return result
@@ -76,4 +73,10 @@ class TragedyCalculator(PerformanceCalculator):
 
 
 class ComedyCalculator(PerformanceCalculator):
-    pass
+    @property
+    def amount(self):
+        result = 30000
+        if self.performance['audience'] > 20:
+            result += 10000 + 500 * (self.performance['audience'] - 20)
+        result += 300 * self.performance['audience']
+        return result
