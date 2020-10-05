@@ -7,18 +7,11 @@ def create_statement_data(invoice, plays):
         result = dict(**a_performance)
         result['play'] = calculator.play
         result['amount'] = calculator.amount
-        result['volume_credits'] = volume_credits_for(result)
+        result['volume_credits'] = calculator.volume_credits
         return result
 
     def play_for(a_performance):
         return plays[a_performance['playID']]
-
-    def volume_credits_for(a_performance):
-        result = 0
-        result += max(a_performance['audience'] - 30, 0)
-        if "comedy" == a_performance['play']['type']:
-            result += a_performance['audience'] // 5
-        return result
 
     def total_volume_credits(data):
         return sum(map(lambda perf: perf['volume_credits'],
@@ -55,4 +48,12 @@ class PerformanceCalculator:
             result += 300 * self.performance['audience']
         else:
             raise ValueError(f"unknown type: {self.performance['play']['type']}")
+        return result
+
+    @property
+    def volume_credits(self):
+        result = 0
+        result += max(self.performance['audience'] - 30, 0)
+        if "comedy" == self.play['type']:
+            result += self.performance['audience'] // 5
         return result
