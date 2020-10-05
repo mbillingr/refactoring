@@ -2,7 +2,7 @@ def statement(invoice, plays):
     def play_for(a_performance):
         return plays[a_performance['playID']]
 
-    def amount_for(a_performance, play):
+    def amount_for(a_performance):
         result = 0
         if play_for(a_performance)['type'] == "tragedy":
             result = 40000
@@ -23,7 +23,7 @@ def statement(invoice, plays):
     format = "${:,.2f}".format
 
     for perf in invoice['performances']:
-        this_amount = amount_for(perf, play_for(perf))
+        this_amount = amount_for(perf)
 
         # add volume credits
         volume_credits += max(perf['audience'] - 30, 0)
