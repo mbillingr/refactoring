@@ -17,12 +17,11 @@ def statement(invoice, plays):
             raise ValueError(f"unknown type: {play_for(a_performance)['type']}")
         return result
 
-    def volume_credits_for(perf):
+    def volume_credits_for(a_performance):
         volume_credits = 0
-        volume_credits += max(perf['audience'] - 30, 0)
-        # add extra credit for every ten comedy attendees
-        if "comedy" == play_for(perf)['type']:
-            volume_credits += perf['audience'] // 5
+        volume_credits += max(a_performance['audience'] - 30, 0)
+        if "comedy" == play_for(a_performance)['type']:
+            volume_credits += a_performance['audience'] // 5
         return volume_credits
 
     total_amount = 0
