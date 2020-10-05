@@ -1,7 +1,11 @@
 def statement(invoice, plays):
     def enrich_performance(a_performance):
         result = dict(**a_performance)
+        result['play'] = play_for(result)
         return result
+
+    def play_for(a_performance):
+        return plays[a_performance['playID']]
 
     statement_data = {}
     statement_data['customer'] = invoice['customer']
@@ -13,7 +17,6 @@ def statement(invoice, plays):
 def render_plain_text(data, plays):
     def play_for(a_performance):
         return plays[a_performance['playID']]
-
     def amount_for(a_performance):
         result = 0
         if play_for(a_performance)['type'] == "tragedy":
